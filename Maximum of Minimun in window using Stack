@@ -1,0 +1,85 @@
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class get{
+    void check(int ar[])
+    {
+        int y[]=new int[ar.length];
+        int h[]= new int[ar.length];
+        Stack<Integer> stack = new Stack<>();
+        for(int i=0;i<ar.length;i++)
+        {
+            if(stack.empty()||ar[stack.peek()]<=ar[i])
+            {
+                stack.push(i);
+            }
+            else
+            {
+                while(!stack.empty()&&ar[stack.peek()]>ar[i])
+                {
+                    h[stack.peek()]=i;
+                    stack.pop();
+                }
+                stack.push(i);
+            }
+        }
+        while(!stack.empty())
+            {
+                h[stack.peek()]=ar.length;
+                stack.pop();
+            }
+        for(int i=ar.length-1;i>=0;i--)
+        {
+            if(stack.empty()||ar[stack.peek()]<=ar[i])
+            {
+                stack.push(i);
+            }
+            else
+            {
+                while(!stack.empty()&&ar[stack.peek()]>ar[i])
+                {
+                    y[stack.peek()]=i;
+                    stack.pop();
+                }
+                stack.push(i);
+            }
+        }
+        while(!stack.empty())
+        {
+            y[stack.peek()]=-1;
+            stack.pop();
+        }
+        int []ans = new int[ar.length+1];
+        for(int i=0;i<ar.length;i++)
+        {
+            int len=h[i]-y[i]-1;
+            ans[len]=Math.max(ans[len],ar[i]);
+        }
+        for(int i=ar.length-1;i>=0;i--)
+        {
+            ans[i]=Math.max(ans[i],ans[i+1]);
+        }
+        for(int i=1;i<ar.length+1;i++)
+        System.out.print(ans[i]+" ");
+    }
+}
+class GFG {
+	public static void main (String[] args) {
+	    Scanner s = new Scanner(System.in);
+	    int n= s.nextInt();
+	    for(int i=0;i<n;i++)
+	    {
+	        int t= s.nextInt();
+	        int []a= new int[t];
+	        int []res= new int[t];
+	        for(int j=0;j<t;j++)
+	        {
+	            a[j]=s.nextInt();
+	        }
+	        get sd=new get();
+	        sd.check(a);
+	        System.out.println();
+	    }
+	}
+}
