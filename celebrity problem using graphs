@@ -1,0 +1,110 @@
+import java.util.*;
+class Celebrity_Problem
+{
+	public static void main(String args[])
+	{
+		Scanner sc = new Scanner(System.in);
+		int t = sc.nextInt();
+		while(t>0)
+		{
+			int N = sc.nextInt();
+			int M[][] = new int[N][N];
+			for(int i=0; i<N; i++)
+			{
+				for(int j=0; j<N; j++)
+				{
+					M[i][j] = sc.nextInt();
+				}
+			}
+		System.out.println(new GfG().getId(M,N));
+		t--;
+		}
+	}
+}
+class Graph
+{
+    int v;
+    LinkedList<Integer>adj[];
+    Graph(int v)
+    {
+        this.v=v;
+        adj= new LinkedList[v];
+        for(int i=0;i<v;i++)
+        {
+            adj[i]=new LinkedList<>();
+        }
+    }
+    void addedge(int src, int dest)
+    {
+        adj[dest].add(src);
+    }
+    void dfs(int ar[])
+    {
+        for(int i=0;i<v;i++)
+        {
+            boolean[] visited= new boolean[v];
+            dfsutil(i,visited);
+            int flag=1;
+            for(int j=0;j<v;j++)
+            {
+                if(visited[j]==false)
+                {
+                    flag=0;
+                    ar[i]=0;
+                    break;
+                }
+            }
+            if(flag==1)
+            {
+                ar[i]=1;
+            }
+        }
+        return ;
+    }
+    void dfsutil(int e,boolean visited[])
+    {
+        visited[e]=true;
+        for(int i : adj[e])
+        {
+            if(visited[i]==false)
+            {
+                dfsutil(i,visited);
+            }
+        }
+    }
+}
+class GfG
+{
+    int getId(int M[][], int n)
+    {
+        Graph g=new Graph(n);
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(M[i][j]==1)
+                {
+                    g.addedge(i,j);
+                }
+            }
+        }
+       int []a= new int[n];
+       g.dfs(a);
+       int count=0;
+       int l=0;
+       for(int i=0;i<n;i++)
+       {
+           if(a[i]==1)
+           {
+               count++;
+               l=i;
+           }
+           
+       }
+       if(count==0||count>1)
+       return -1;
+       else
+       return l;
+        
+    }
+}
